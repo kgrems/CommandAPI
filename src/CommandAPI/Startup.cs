@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
+using Newtonsoft.Json.Serialization;
 
 namespace CommandAPI
 {
@@ -31,6 +32,11 @@ namespace CommandAPI
             builder.UserID = Configuration["UserID"];
             builder.Password = Configuration["Password"];
 
+            services.AddControllers().AddNewtonsoftJson(x =>
+            {
+                x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
+            
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //services.AddScoped<ICommandAPIRepo, MockCommandAPIRepo>();
